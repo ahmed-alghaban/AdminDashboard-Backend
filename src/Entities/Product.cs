@@ -13,7 +13,8 @@ namespace AdminDashboard.src.Entities
     public string SKU { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public int QuantityInStock { get; set; }
-    public string? Category { get; set; }
+    public Guid CategoryId { get; set; }
+    public Category Category { get; set; }
     public string? ImageUrl { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

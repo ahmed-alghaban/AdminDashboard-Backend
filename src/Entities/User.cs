@@ -24,7 +24,7 @@ namespace AdminDashboard.src.Entities
     public DateTime? LastLoginAt { get; set; }
     public string? ProfileImageUrl { get; set; }
 
-    
+    public ICollection<Order> Orders { get; set; }
     public ICollection<AuditLog> AuditLogs { get; set; }
     }
 }
