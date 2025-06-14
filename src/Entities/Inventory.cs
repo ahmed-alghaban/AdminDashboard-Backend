@@ -15,8 +15,6 @@ namespace AdminDashboard.src.Entities
     public int QuantityAvailable { get; set; }
     public int ReorderLevel { get; set; }
     public DateTime? LastRestockedAt { get; set; }
-
-    public Guid? WarehouseId { get; set; } // optional
 }
 
 }
