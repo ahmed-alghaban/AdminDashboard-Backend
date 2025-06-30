@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TfK/LsFSwZ0=",
+  "dgSpecHash": "kVKQqDlVs04=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\OneDrive\\سطح المكتب\\Admin-Dashboard\\Backend\\AdminDashboard\\AdminDashboard.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\OneDrive\\سطح المكتب\\AdminDashboard\\Backend\\AdminDashboard-Backend\\AdminDashboard.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -9773,11 +9773,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\OneDrive\\سطح المكتب\\Admin-Dashboard\\Backend\\AdminDashboard\\AdminDashboard.csproj",
+      "projectUniqueName": "c:\\Users\\Admin\\OneDrive\\سطح المكتب\\AdminDashboard\\Backend\\AdminDashboard-Backend\\AdminDashboard.csproj",
       "projectName": "AdminDashboard",
-      "projectPath": "C:\\Users\\Admin\\OneDrive\\سطح المكتب\\Admin-Dashboard\\Backend\\AdminDashboard\\AdminDashboard.csproj",
+      "projectPath": "c:\\Users\\Admin\\OneDrive\\سطح المكتب\\AdminDashboard\\Backend\\AdminDashboard-Backend\\AdminDashboard.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\OneDrive\\سطح المكتب\\Admin-Dashboard\\Backend\\AdminDashboard\\obj\\",
+      "outputPath": "c:\\Users\\Admin\\OneDrive\\سطح المكتب\\AdminDashboard\\Backend\\AdminDashboard-Backend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
