@@ -10,7 +10,7 @@ namespace AdminDashboard.src.Abstraction
     public interface IRoleService
     {
         Task<IEnumerable<RoleDto>> GetAllRolesAsync();
-        Task<UserDto> AssignRoleToUserAsync(Guid userId, Guid roleId);
+        Task<UserDto> AssignRoleToUserAsync(AssignRoleToUserDto assignRoleToUser);
         Task<RoleDto> CreateRoleAsync(RoleCreateDto role);
     }
 }

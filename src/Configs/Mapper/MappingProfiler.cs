@@ -26,6 +26,7 @@ namespace AdminDashboard.src.Configs
 
             CreateMap<Role, RoleDto>();
             CreateMap<RoleCreateDto, Role>();
+            CreateMap<AssignRoleToUserDto, User>();
         }
     }
 }

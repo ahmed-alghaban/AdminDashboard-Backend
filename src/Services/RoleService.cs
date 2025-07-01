@@ -28,11 +28,11 @@ namespace AdminDashboard.src.Services
             var roles = await _context.Roles.ToListAsync();
             return _mapper.Map<IEnumerable<RoleDto>>(roles);
         }
-        public async Task<UserDto> AssignRoleToUserAsync(Guid userId, Guid roleId)
+        public async Task<UserDto> AssignRoleToUserAsync(AssignRoleToUserDto assignRoleToUser)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(user => user.UserId == userId) ?? throw new KeyNotFoundException("User not found");
-            var role = await _context.Roles.FirstOrDefaultAsync(role => role.RoleId == roleId) ?? throw new KeyNotFoundException("Role not found");
-            user.RoleId = roleId;
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.UserId == assignRoleToUser.UserId) ?? throw new KeyNotFoundException("User not found");
+            var role = await _context.Roles.FirstOrDefaultAsync(role => role.RoleId == assignRoleToUser.RoleId) ?? throw new KeyNotFoundException("Role not found");
+            user.RoleId = role.RoleId;
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(user);
         }
