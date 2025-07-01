@@ -37,6 +37,7 @@ namespace AdminDashboard.src.Services
         public async Task<UserDto> CreateUserAsync(UserCreateDto user)
         {
             var newUser = _mapper.Map<User>(user);
+            newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(newUser);
@@ -54,6 +55,15 @@ namespace AdminDashboard.src.Services
         {
             var user = await _context.Users.FindAsync(id) ?? throw new Exception("User not found");
             _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ChangeUserStatusAsync(Guid id, UserStatus status)
+        {
+            var user = await _context.Users.FindAsync(id) ?? throw new Exception("User not found");
+            user.Status = status;
+            _context.Update(user);
             await _context.SaveChangesAsync();
             return true;
         }

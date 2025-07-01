@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.User;
 namespace AdminDashboard.src.Abstraction
 {
@@ -12,5 +13,6 @@ namespace AdminDashboard.src.Abstraction
         Task<UserDto> CreateUserAsync(UserCreateDto user);
         Task<UserDto> UpdateUserAsync(Guid id, UserUpdateDto user);
         Task<bool> DeleteUserAsync(Guid id);
+        Task<bool> ChangeUserStatusAsync(Guid id, UserStatus status);
     }
 }
