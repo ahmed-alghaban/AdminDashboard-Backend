@@ -24,7 +24,7 @@ namespace AdminDashboard.src.Services
         }
         public async Task<string> LoginAsync(UserLoginDto userLoginDto)
         {
-           var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userLoginDto.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userLoginDto.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.PasswordHash))
             {
                 throw new ArgumentException("Email or Password is incorrect");
@@ -32,11 +32,6 @@ namespace AdminDashboard.src.Services
             var token = _generateToken.GenerateJwtToken(user).ToString();
 
             return token;
-        }
-
-        public Task<string> LogoutAsync()
-        {
-            throw new NotImplementedException();
         }
 
         public Task<string> ForgotPasswordAsync(string email)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
+using AdminDashboard.src.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +28,9 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddScoped<IUserService, UserService>()
                 .AddScoped<ICategoryService, CategoryService>()
-                .AddScoped<IAuthService, AuthService>();
-;
+                .AddScoped<IAuthService, AuthService>()
+                .AddScoped<GenerateToken>();
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(defaultConnection));
 
 builder.Services.AddHttpContextAccessor();
