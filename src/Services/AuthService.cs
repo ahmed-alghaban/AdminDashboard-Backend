@@ -4,19 +4,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Configs;
+using AdminDashboard.src.Dtos.Auth;
+using AdminDashboard.src.Utilities;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.src.Services
 {
     public class AuthService : IAuthService
     {
         private readonly AppDbContext _context;
-        public AuthService(AppDbContext context)
+        private readonly IMapper _mapper;
+        private readonly GenerateToken _generateToken;
+        public AuthService(AppDbContext context, IMapper mapper, GenerateToken generateToken)
         {
             _context = context;
+            _mapper = mapper;
+            _generateToken = generateToken;
         }
-        public Task<string> LoginAsync(string email, string password)
+        public async Task<string> LoginAsync(UserLoginDto userLoginDto)
         {
-            throw new NotImplementedException();
+           var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userLoginDto.Email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.PasswordHash))
+            {
+                throw new ArgumentException("Email or Password is incorrect");
+            }
+            var token = _generateToken.GenerateJwtToken(user).ToString();
+
+            return token;
         }
 
         public Task<string> LogoutAsync()
