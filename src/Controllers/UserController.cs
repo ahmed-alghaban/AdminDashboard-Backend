@@ -80,22 +80,7 @@ namespace AdminDashboard.src.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(Guid id)
-        {
-            try
-            {
-                var isDeleted = await _userService.DeleteUserAsync(id);
-                var result = new ApiResult<bool>(isDeleted, true, "User deleted successfully");
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut("{id}/status")]
+        [HttpPatch("{id}/status")]
         public async Task<IActionResult> ChangeUserStatus(Guid id, UserStatus status)
         {
             try
@@ -109,5 +94,20 @@ namespace AdminDashboard.src.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            try
+            {
+                var isDeleted = await _userService.DeleteUserAsync(id);
+                var result = new ApiResult<bool>(isDeleted, true, "User deleted successfully");
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        } 
     }
 }

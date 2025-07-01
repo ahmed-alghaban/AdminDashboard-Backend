@@ -46,6 +46,7 @@ namespace AdminDashboard.src.Services
         public async Task<UserDto> UpdateUserAsync(Guid id, UserUpdateDto user)
         {
             var existingUser = await _context.Users.FindAsync(id) ?? throw new Exception("User not found");
+            existingUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash) ?? existingUser.PasswordHash;
             _context.Update(_mapper.Map(user, existingUser));
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(existingUser);
