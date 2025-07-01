@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AdminDashboard.src.Dtos.Role
 {
-    public class CreateRoleDto
+    public class RoleCreateDto
     {
         public required string Name { get; set; }
         public string? Description { get; set; }

@@ -11,6 +11,6 @@ namespace AdminDashboard.src.Abstraction
     {
         Task<IEnumerable<RoleDto>> GetAllRolesAsync();
         Task<UserDto> AssignRoleToUserAsync(Guid userId, Guid roleId);
-        Task<RoleDto> CreateRoleAsync(CreateRoleDto role);
+        Task<RoleDto> CreateRoleAsync(RoleCreateDto role);
     }
 }
