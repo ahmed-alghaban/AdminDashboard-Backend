@@ -11,7 +11,7 @@ using AdminDashboard.src.Configs.Exceptions;
 
 namespace AdminDashboard.src.Configs.Middleware
 {
-    public class ExceptionMiddleware : IMiddleware
+    public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
@@ -24,11 +24,11 @@ namespace AdminDashboard.src.Configs.Middleware
             _env = env;
         }
 
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                await next(context);
+                await _next(context);
             }
             catch (Exception ex)
             {

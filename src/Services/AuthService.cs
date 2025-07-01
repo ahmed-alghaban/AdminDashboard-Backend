@@ -32,10 +32,10 @@ namespace AdminDashboard.src.Services
             if (user == null || !BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.PasswordHash))
             {
                 throw new ArgumentException("Email or Password is incorrect");
-            } 
+            }
             var token = _generateToken.GenerateJwtToken(user).ToString();
             return token;
         }
-        
+
     }
 }
