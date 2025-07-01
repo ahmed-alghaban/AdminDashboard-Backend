@@ -45,7 +45,7 @@ namespace AdminDashboard.src.Services
         public async Task<UserDto> UpdateUserAsync(Guid id, UserUpdateDto user)
         {
             var existingUser = await _context.Users.FindAsync(id) ?? throw new Exception("User not found");
-            _mapper.Map(user, existingUser);
+            _context.Update(_mapper.Map(user, existingUser));
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(existingUser);
         }

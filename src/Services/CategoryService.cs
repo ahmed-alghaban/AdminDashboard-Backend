@@ -45,7 +45,7 @@ namespace AdminDashboard.src.Services
         public async Task<CategoryDto> UpdateCategoryAsync(Guid id, CategoryUpdateDto category)
         {
             var existingCategory = await _context.Categories.FindAsync(id) ?? throw new Exception("Category not found");
-            _mapper.Map(category, existingCategory);
+            _context.Update(_mapper.Map(category, existingCategory));
             await _context.SaveChangesAsync();
             return _mapper.Map<CategoryDto>(existingCategory);
         }

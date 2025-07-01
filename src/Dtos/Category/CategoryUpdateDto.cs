@@ -8,12 +8,7 @@ namespace AdminDashboard.src.Dtos.Category
 {
     public class CategoryUpdateDto
     {
-        [Required]
-        [MaxLength(100)]
-        public required string Name { get; set; }
-
-        [Required]
-        [MaxLength(255)]
-        public  required string Description { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
     }
 }
