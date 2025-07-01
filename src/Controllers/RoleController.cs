@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminDashboard.src.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/roles")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;

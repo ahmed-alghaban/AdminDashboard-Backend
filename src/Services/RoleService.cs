@@ -7,6 +7,7 @@ using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.Role;
 using AdminDashboard.src.Dtos.User;
 using AdminDashboard.src.Entities;
+using AdminDashboard.src.Utilities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +39,7 @@ namespace AdminDashboard.src.Services
         }
         public async Task<RoleDto> CreateRoleAsync(RoleCreateDto role)
         {
+            await _context.EnsureUniqueAsync<Role>(r => r.Name == role.Name, "Role already exists");
             var newRole = _mapper.Map<Role>(role);
             await _context.Roles.AddAsync(newRole);
             await _context.SaveChangesAsync();
