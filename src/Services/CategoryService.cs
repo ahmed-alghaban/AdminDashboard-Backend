@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Configs;
+using AdminDashboard.src.Configs.Exceptions;
 using AdminDashboard.src.Dtos.Category;
 using AdminDashboard.src.Entities;
+using AdminDashboard.src.Utilities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +38,7 @@ namespace AdminDashboard.src.Services
 
         public async Task<CategoryDto> CreateCategoryAsync(CategoryCreateDto category)
         {
+            await _context.EnsureUniqueAsync<Category>(c => c.Name == category.Name, "Category already exists");
             var newCategory = _mapper.Map<Category>(category);
             _context.Categories.Add(newCategory);
             await _context.SaveChangesAsync();

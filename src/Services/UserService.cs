@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using AdminDashboard.src.Dtos.User;
 using AdminDashboard.src.Entities;
 using AdminDashboard.src.Configs.Exceptions;
+using AdminDashboard.src.Utilities;
 
 namespace AdminDashboard.src.Services
 {
@@ -37,23 +38,8 @@ namespace AdminDashboard.src.Services
 
         public async Task<UserDto> CreateUserAsync(UserCreateDto user)
         {
-            var existingUser = await _context.Users
-            .AsNoTracking()
-            .Where(u => u.Email == user.Email || u.PhoneNumber == user.PhoneNumber)
-            .FirstOrDefaultAsync();
-
-            if (existingUser is not null)
-            {
-                if (existingUser.Email == user.Email)
-                {
-                    throw new ConflictException("Email already exists");
-                }
-
-                if (existingUser.PhoneNumber == user.PhoneNumber)
-                {
-                    throw new ConflictException("Phone number already exists");
-                }
-            }
+            await _context.EnsureUniqueAsync<User>(u => u.Email == user.Email || u.PhoneNumber == user.PhoneNumber, "User already exists");
+            await _context.EnsureUniqueAsync<User>(u => u.PhoneNumber == user.PhoneNumber, "Phone number already exists");
 
             var newUser = _mapper.Map<User>(user);
             newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
