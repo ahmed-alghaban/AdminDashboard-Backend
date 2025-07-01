@@ -39,7 +39,6 @@ namespace AdminDashboard.src.Services
         public async Task<UserDto> CreateUserAsync(UserCreateDto user)
         {
             await _context.EnsureUniqueAsync<User>(u => u.Email == user.Email || u.PhoneNumber == user.PhoneNumber, "User already exists");
-            await _context.EnsureUniqueAsync<User>(u => u.PhoneNumber == user.PhoneNumber, "Phone number already exists");
 
             var newUser = _mapper.Map<User>(user);
             newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
