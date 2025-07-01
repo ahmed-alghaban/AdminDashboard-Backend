@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
+using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.User;
 using AdminDashboard.src.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -87,6 +88,21 @@ namespace AdminDashboard.src.Controllers
                 var isDeleted = await _userService.DeleteUserAsync(id);
                 var result = new ApiResult<bool>(isDeleted, true, "User deleted successfully");
                 return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> ChangeUserStatus(Guid id, UserStatus status)
+        {
+            try
+            {
+                var isChanged = await _userService.ChangeUserStatusAsync(id, status);
+                var result = new ApiResult<bool>(isChanged, true, "User status changed successfully");
+                return Ok(result);
             }
             catch (Exception ex)
             {
