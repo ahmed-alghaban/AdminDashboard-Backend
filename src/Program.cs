@@ -30,6 +30,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>()
                 .AddScoped<ICategoryService, CategoryService>()
                 .AddScoped<IAuthService, AuthService>()
+                .AddScoped<IRoleService, RoleService>()
                 .AddScoped<GenerateToken>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(defaultConnection));
