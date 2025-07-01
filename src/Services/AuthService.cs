@@ -8,6 +8,7 @@ using AdminDashboard.src.Dtos.Auth;
 using AdminDashboard.src.Utilities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace AdminDashboard.src.Services
 {
@@ -16,11 +17,14 @@ namespace AdminDashboard.src.Services
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly GenerateToken _generateToken;
-        public AuthService(AppDbContext context, IMapper mapper, GenerateToken generateToken)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AuthService(AppDbContext context, IMapper mapper, GenerateToken generateToken, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
             _generateToken = generateToken;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<string> LoginAsync(UserLoginDto userLoginDto)
         {
@@ -28,25 +32,10 @@ namespace AdminDashboard.src.Services
             if (user == null || !BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.PasswordHash))
             {
                 throw new ArgumentException("Email or Password is incorrect");
-            }
+            } 
             var token = _generateToken.GenerateJwtToken(user).ToString();
-
             return token;
         }
-
-        public Task<string> ForgotPasswordAsync(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> ResetPasswordAsync(string email, string token, string newPassword)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> UpdateProfileAsync(string email, string newPassword, string newEmail)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
