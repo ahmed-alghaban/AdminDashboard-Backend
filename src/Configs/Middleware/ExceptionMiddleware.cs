@@ -7,6 +7,7 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using AdminDashboard.src.Configs.Exceptions;
 
 namespace AdminDashboard.src.Configs.Middleware
 {
@@ -41,7 +42,7 @@ namespace AdminDashboard.src.Configs.Middleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = exception switch
             {
-                ArgumentException => (int)HttpStatusCode.BadRequest,
+                ConflictException => (int)HttpStatusCode.Conflict,
                 KeyNotFoundException => (int)HttpStatusCode.NotFound,
                 UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
                 _ => (int)HttpStatusCode.InternalServerError
