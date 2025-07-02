@@ -54,7 +54,8 @@ namespace AdminDashboard.src.Services
         public async Task<ProductDto> DeleteProductAsync(Guid id)
         {
             var existingProduct = await _context.Products.FindAsync(id) ?? throw new KeyNotFoundException("Product not found");
-            _context.Products.Remove(existingProduct);
+            existingProduct.IsActive = false;
+            _context.Products.Update(existingProduct);
             await _context.SaveChangesAsync();
             return _mapper.Map<ProductDto>(existingProduct);
         }
