@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.src.Dtos.Category;
+using AdminDashboard.src.Dtos.Product;
 using AdminDashboard.src.Dtos.Role;
 using AdminDashboard.src.Dtos.User;
 using AdminDashboard.src.Entities;
@@ -27,6 +28,16 @@ namespace AdminDashboard.src.Configs
             CreateMap<Role, RoleDto>();
             CreateMap<RoleCreateDto, Role>();
             CreateMap<AssignRoleToUserDto, User>();
+
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductCreateDto, Product>();
+            CreateMap<ProductUpdateDto, Product>()
+             .ForMember(dest => dest.Price, act => act.Condition(src => src.Price > 0))
+             .ForMember(dest => dest.SKU, act => act.Condition(src => !string.IsNullOrEmpty(src.SKU)))
+             .ForMember(dest => dest.CategoryId, act => act.Condition(src => src.CategoryId != Guid.Empty))
+             .ForMember(dest => dest.ImageUrl, act => act.Condition(src => !string.IsNullOrEmpty(src.ImageUrl)))
+             .ForMember(dest => dest.ProductName, act => act.Condition(src => !string.IsNullOrEmpty(src.ProductName)))
+             .ForMember(dest => dest.Description, act => act.Condition(src => !string.IsNullOrEmpty(src.Description)));
         }
     }
 }
