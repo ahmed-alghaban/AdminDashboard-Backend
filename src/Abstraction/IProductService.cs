@@ -8,7 +8,7 @@ namespace AdminDashboard.src.Abstraction
 {
     public interface IProductService
     {
-        Task<List<ProductDto>> GetAllProductsAsync();
+        Task<IEnumerable<ProductDto>> GetAllProductsAsync();
         Task<ProductDto> GetProductByIdAsync(Guid id);
         Task<ProductDto> CreateProductAsync(ProductCreateDto product);
         Task<ProductDto> UpdateProductAsync(Guid id, ProductUpdateDto product);
