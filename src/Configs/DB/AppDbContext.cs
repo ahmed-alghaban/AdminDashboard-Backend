@@ -133,10 +133,6 @@ namespace AdminDashboard.src.Configs
                 entity.Property(inventory => inventory.QuantityAvailable).IsRequired();
                 entity.Property(inventory => inventory.ReorderLevel).IsRequired();
                 entity.Property(inventory => inventory.LastRestockedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(inventory => inventory.Product)
-                .WithOne(product => product.Inventory)
-                .HasForeignKey<Product>(product => product.ProductId);
             });
 
             modelBuilder.Entity<Category>(entity =>

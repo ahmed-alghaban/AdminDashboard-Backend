@@ -31,6 +31,7 @@ builder.Services.AddScoped<IUserService, UserService>()
                 .AddScoped<ICategoryService, CategoryService>()
                 .AddScoped<IAuthService, AuthService>()
                 .AddScoped<IRoleService, RoleService>()
+                .AddScoped<IProductService, ProductService>()
                 .AddScoped<GenerateToken>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(defaultConnection));

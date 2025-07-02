@@ -26,5 +26,7 @@ namespace AdminDashboard.src.Dtos.Product
         [Required]
         [StringLength(2048)]
         public string? ImageUrl { get; set; }
+        [Required]
+        public Guid InventoryId { get; set; }
     }
 }
