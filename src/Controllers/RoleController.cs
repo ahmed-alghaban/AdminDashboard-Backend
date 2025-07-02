@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Dtos.Role;
+using AdminDashboard.src.Dtos.User;
+using AdminDashboard.src.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminDashboard.src.Controllers
@@ -25,7 +27,8 @@ namespace AdminDashboard.src.Controllers
             try
             {
                 var roles = await _roleService.GetAllRolesAsync();
-                return Ok(roles);
+                var result = new ApiResult<IEnumerable<RoleDto>>(roles, true, "Roles fetched successfully");
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -39,7 +42,8 @@ namespace AdminDashboard.src.Controllers
             try
             {
                 var newRole = await _roleService.CreateRoleAsync(role);
-                return Ok(newRole);
+                var result = new ApiResult<RoleDto>(newRole, true, "Role created successfully");
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -53,7 +57,8 @@ namespace AdminDashboard.src.Controllers
             try
             {
                 var user = await _roleService.AssignRoleToUserAsync(assignRoleToUser);
-                return Ok(user);
+                var result = new ApiResult<UserDto>(user, true, "Role assigned to user successfully");
+                return Ok(result);
             }
             catch (Exception ex)
             {
