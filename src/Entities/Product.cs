@@ -16,9 +16,6 @@ namespace AdminDashboard.src.Entities
     public Guid CategoryId { get; set; }
     public Category Category { get; set; }
     public string? ImageUrl { get; set; }
-    public Guid InventoryId { get; set; }
-    
-
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool IsActive { get; set; } = true;
 

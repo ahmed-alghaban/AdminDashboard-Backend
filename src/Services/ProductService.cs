@@ -39,6 +39,9 @@ namespace AdminDashboard.src.Services
             var newProduct = _mapper.Map<Product>(product);
             await _context.Products.AddAsync(newProduct);
             await _context.SaveChangesAsync();
+            var inventory = new Inventory { ProductId = newProduct.ProductId, QuantityAvailable = product.QuantityInStock, ReorderLevel = product.QuantityInStock };
+            await _context.Inventories.AddAsync(inventory);
+            await _context.SaveChangesAsync();
             return _mapper.Map<ProductDto>(newProduct);
         }
 
