@@ -8,17 +8,14 @@ namespace AdminDashboard.src.Entities
 {
    public class Order
 {
-    public Guid OrderId { get; set; }
+     public Guid OrderId { get; set; }
     public Guid UserId { get; set; }
-    public User User { get; set; }
-
-    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+    public  string UserFullName { get; set; }
+    public DateTime OrderDate { get; set; }
     public decimal TotalAmount { get; set; }
-
-    public OrderStatus Status { get; set; } = OrderStatus.Pending;
-    public string PaymentMethod { get; set; } = string.Empty;
-    public string ShippingAddress { get; set; } = string.Empty;
-
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public OrderStatus Status { get; set; }
+    public string PaymentMethod { get; set; }
+    public string ShippingAddress { get; set; }
+    public List<OrderItem> OrderItems { get; set; }
 }
 }
