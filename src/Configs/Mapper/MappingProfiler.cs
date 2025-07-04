@@ -40,13 +40,19 @@ namespace AdminDashboard.src.Configs
                 .ForMember(dest => dest.ProductName, act => act.Condition(src => !string.IsNullOrEmpty(src.ProductName)))
                 .ForMember(dest => dest.Description, act => act.Condition(src => !string.IsNullOrEmpty(src.Description)));
 
+            CreateMap<CreateOrderItemDto, OrderItem>()
+                .ForMember(dest => dest.UnitPrice, opt => opt.Ignore());
+            CreateMap<OrderItemDto, OrderItem>()
+                .ForMember(dest => dest.OrderItemId, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderId, opt => opt.Ignore())
+                .ForMember(dest => dest.Order, opt => opt.Ignore())
+                .ForMember(dest => dest.Product, opt => opt.Ignore())
+                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice));
             CreateMap<OrderCreateDto, Order>()
                 .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => OrderStatus.Pending))
                 .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(_ => DateTime.UtcNow))
                 .ForMember(dest => dest.TotalAmount, opt => opt.Ignore());
-            CreateMap<CreateOrderItemDto, OrderItem>()
-                .ForMember(dest => dest.UnitPrice, opt => opt.Ignore());
             CreateMap<Order, OrderDto>()
                 .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
             CreateMap<OrderItem, OrderItemDto>()
