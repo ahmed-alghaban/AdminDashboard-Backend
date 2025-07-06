@@ -50,7 +50,7 @@ namespace AdminDashboard.src.Configs.Middleware
 
             var response = new
             {
-                message = exception.Message,
+                message = exception.Message + (exception.InnerException != null ? " | Inner: " + exception.InnerException.Message : ""),
                 stackTrace = _env.IsDevelopment() ? exception.StackTrace : null
             };
 

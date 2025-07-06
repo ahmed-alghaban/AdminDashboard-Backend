@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdminDashboard.src.Dtos.AuditLog;
 using AdminDashboard.src.Dtos.Category;
 using AdminDashboard.src.Dtos.Order;
 using AdminDashboard.src.Dtos.Product;
@@ -58,6 +59,11 @@ namespace AdminDashboard.src.Configs
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
                 .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Quantity * src.UnitPrice));
+
+            CreateMap<AuditLogCreateDto, AuditLog>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Timestamp, opt => opt.MapFrom(_ => DateTime.UtcNow));
+            CreateMap<AuditLog, AuditLogDto>();
         }
     }
 }

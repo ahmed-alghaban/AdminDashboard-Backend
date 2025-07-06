@@ -57,15 +57,14 @@ namespace AdminDashboard.src.Configs
                 entity.Property(auditLog => auditLog.AuditLogId).HasDefaultValueSql("uuid_generate_v4()");
                 entity.Property(auditLog => auditLog.UserId).IsRequired();
                 entity.Property(auditLog => auditLog.ActionType).IsRequired();
-                entity.Property(auditLog => auditLog.EntityName).IsRequired();
-                entity.Property(auditLog => auditLog.EntityId).IsRequired();
                 entity.Property(auditLog => auditLog.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                entity.Property(auditLog => auditLog.IpAddress).IsRequired();
+                entity.Property(auditLog => auditLog.IpAddress).IsRequired(false);
                 entity.Property(auditLog => auditLog.Description).IsRequired();
 
                 entity.HasOne(auditLog => auditLog.User)
                 .WithMany(user => user.AuditLogs)
-                .HasForeignKey(auditLog => auditLog.UserId);
+                .HasForeignKey(auditLog => auditLog.UserId)
+                .IsRequired(false);
             });
 
             modelBuilder.Entity<Order>(entity =>
