@@ -8,6 +8,7 @@ using AdminDashboard.src.Dtos.Inventory;
 using AdminDashboard.src.Dtos.Order;
 using AdminDashboard.src.Dtos.Product;
 using AdminDashboard.src.Dtos.Role;
+using AdminDashboard.src.Dtos.Setting;
 using AdminDashboard.src.Dtos.User;
 using AdminDashboard.src.Entities;
 using AutoMapper;
@@ -67,6 +68,10 @@ namespace AdminDashboard.src.Configs
             CreateMap<AuditLog, AuditLogDto>();
 
             CreateMap<Inventory, InventoryDto>();
+
+            CreateMap<Setting, SettingDto>();
+            CreateMap<SettingUpdateDto, Setting>()
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }
