@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
+using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.Order;
 using AdminDashboard.src.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,17 @@ namespace AdminDashboard.src.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, OrderStatus status){
+            try{
+                var updatedOrder = await _orderService.UpdateOrderStatusAsync(id, status);
+                var result = new ApiResult<OrderDto>(updatedOrder, true, "Order status updated successfully");
+                return Ok(result);
+            }
+            catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

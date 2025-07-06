@@ -85,11 +85,11 @@ namespace AdminDashboard.src.Services
             return _mapper.Map<OrderDto>(orderObject);
         }
 
-        public async Task<OrderDto> UpdateOrderAsync(Guid id, OrderUpdateDto order){
-            throw new NotImplementedException();
-        }
-        public async Task<OrderDto> DeleteOrderAsync(Guid id){
-            throw new NotImplementedException();
+        public async Task<OrderDto> UpdateOrderStatusAsync(Guid id, OrderStatus status){
+            var order = await _context.Orders.FindAsync(id) ?? throw new KeyNotFoundException("Order not found");
+            order.Status = status;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<OrderDto>(order);
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.Order;
 
 namespace AdminDashboard.src.Abstraction
@@ -11,8 +12,6 @@ namespace AdminDashboard.src.Abstraction
         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
         Task<OrderDto> GetOrderByIdAsync(Guid id);
         Task<OrderDto> CreateOrderAsync(OrderCreateDto order);
-        Task<OrderDto> UpdateOrderAsync(Guid id, OrderUpdateDto order);
-        Task<OrderDto> DeleteOrderAsync(Guid id);
-
+        Task<OrderDto> UpdateOrderStatusAsync(Guid id, OrderStatus status);
     }
 }
