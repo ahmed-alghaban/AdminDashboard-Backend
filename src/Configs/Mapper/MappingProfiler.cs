@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.src.Dtos.AuditLog;
 using AdminDashboard.src.Dtos.Category;
+using AdminDashboard.src.Dtos.Inventory;
 using AdminDashboard.src.Dtos.Order;
 using AdminDashboard.src.Dtos.Product;
 using AdminDashboard.src.Dtos.Role;
@@ -64,6 +65,8 @@ namespace AdminDashboard.src.Configs
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Timestamp, opt => opt.MapFrom(_ => DateTime.UtcNow));
             CreateMap<AuditLog, AuditLogDto>();
+
+            CreateMap<Inventory, InventoryDto>();
         }
     }
 }
