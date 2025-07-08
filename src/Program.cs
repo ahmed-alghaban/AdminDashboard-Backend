@@ -9,6 +9,7 @@ using System.Text;
 using System.Security.Claims;
 using AdminDashboard.src.Utilities;
 using AdminDashboard.src.Configs.Middleware;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,12 @@ var jwtIssuer = Environment.GetEnvironmentVariable("JWT__ISSUER")
 var jwtAudience = Environment.GetEnvironmentVariable("JWT__AUDIENCE")
 ?? throw new InvalidOperationException("JWT Audience is missing in environment variables.");
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+.AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
