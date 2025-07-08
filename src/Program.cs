@@ -41,6 +41,7 @@ builder.Services.AddScoped<IUserService, UserService>()
                 .AddScoped<IOrderService, OrderService>()
                 .AddScoped<IInventoryService, InventoryService>()
                 .AddScoped<ISettingService, SettingService>()
+                .AddScoped<IAnalyticsService, AnalyticsService>()
                 .AddScoped<GenerateToken>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(defaultConnection));
@@ -70,11 +71,11 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseMiddleware<AuditMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseMiddleware<AuditMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
