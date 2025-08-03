@@ -10,8 +10,12 @@ using System.Security.Claims;
 using AdminDashboard.src.Utilities;
 using AdminDashboard.src.Configs.Middleware;
 using System.Text.Json.Serialization;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Clear default inbound claim type map to preserve original claim types
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 Env.Load();
 var defaultConnection = Environment.GetEnvironmentVariable("DB__CONNECTION")
@@ -68,6 +72,7 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
         RoleClaimType = ClaimTypes.Role,
+        NameClaimType = ClaimTypes.NameIdentifier,
         ClockSkew = TimeSpan.Zero
     };
     
@@ -84,6 +89,16 @@ builder.Services.AddAuthentication(options =>
             Console.WriteLine("Token validated successfully");
             var claims = context.Principal?.Claims?.Select(c => $"{c.Type}: {c.Value}");
             Console.WriteLine($"Claims: {string.Join(", ", claims ?? new string[0])}");
+
+            // Debug role claims specifically
+            var roleClaims = context.Principal?.FindAll(ClaimTypes.Role)?.Select(c => c.Value);
+            Console.WriteLine($"Role Claims: {string.Join(", ", roleClaims ?? new string[0])}");
+
+            // Check if user is in specific roles
+            var isAdmin = context.Principal?.IsInRole("Admin") ?? false;
+            var isManager = context.Principal?.IsInRole("Manager") ?? false;
+            Console.WriteLine($"IsAdmin: {isAdmin}, IsManager: {isManager}");
+
             return Task.CompletedTask;
         },
         OnChallenge = context =>
