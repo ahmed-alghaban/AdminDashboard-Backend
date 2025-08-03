@@ -22,9 +22,19 @@ namespace AdminDashboard.src.Services
             _context = context;
             _mapper = mapper;
         }
-        public async Task<PaginationResult<ProductDto>> GetAllProductsAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<PaginationResult<ProductDto>> GetAllProductsAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
         {
-            var products = await _context.Products.ToListAsync();
+            var query = _context.Products.AsQueryable();
+            
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var searchTermLower = searchTerm.ToLower();
+                query = query.Where(p => p.ProductName.ToLower().Contains(searchTermLower) || 
+                                       p.Description.ToLower().Contains(searchTermLower) ||
+                                       p.SKU.ToLower().Contains(searchTermLower));
+            }
+            
+            var products = await query.ToListAsync();
             var mappedProducts = _mapper.Map<List<ProductDto>>(products);
             return await PaginationSearch.PaginationAsync(mappedProducts, pageNumber, pageSize);
         }

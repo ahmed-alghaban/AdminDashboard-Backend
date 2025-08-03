@@ -9,7 +9,7 @@ namespace AdminDashboard.src.Abstraction
 {
     public interface IUserService
     {
-        Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10);
+        Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null);
         Task<UserDto> GetUserByIdAsync(Guid id);
         Task<UserDto> CreateUserAsync(UserCreateDto user);
         Task<UserDto> UpdateUserAsync(Guid id, UserUpdateDto user);

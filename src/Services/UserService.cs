@@ -24,9 +24,19 @@ namespace AdminDashboard.src.Services
             _mapper = mapper;
         }
 
-        public async Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
         {
-            var users = await _context.Users.ToListAsync();
+            var query = _context.Users.AsQueryable();
+            
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var searchTermLower = searchTerm.ToLower();
+                query = query.Where(u => u.FirstName.ToLower().Contains(searchTermLower) || 
+                                       u.LastName.ToLower().Contains(searchTermLower) ||
+                                       (u.FirstName.ToLower() + " " + u.LastName.ToLower()).Contains(searchTermLower));
+            }
+            
+            var users = await query.ToListAsync();
             var mappedUsers = _mapper.Map<List<UserDto>>(users);
             return await PaginationSearch.PaginationAsync(mappedUsers, pageNumber, pageSize);
         }

@@ -42,7 +42,6 @@ namespace AdminDashboard.src.Services
                 ?? throw new KeyNotFoundException("Order not found");
             return _mapper.Map<OrderDto>(order);
         }
-
         public async Task<OrderDto> CreateOrderAsync(OrderCreateDto order)
         {
             var newOrder = _mapper.Map<Order>(order);

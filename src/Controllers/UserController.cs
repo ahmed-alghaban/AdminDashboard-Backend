@@ -23,11 +23,11 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchTerm = null)
         {
             try
             {
-                var paginationResult = await _userService.GetAllUsersAsync(pageNumber, pageSize);
+                var paginationResult = await _userService.GetAllUsersAsync(pageNumber, pageSize, searchTerm);
                 var result = new ApiResult<PaginationResult<UserDto>>(paginationResult, true, "Users fetched successfully");
                 return Ok(result);
             }
