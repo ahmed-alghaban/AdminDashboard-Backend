@@ -42,6 +42,7 @@ builder.Services.AddScoped<IUserService, UserService>()
                 .AddScoped<IInventoryService, InventoryService>()
                 .AddScoped<ISettingService, SettingService>()
                 .AddScoped<IAnalyticsService, AnalyticsService>()
+                .AddScoped<IAuditLogService, AuditLogService>()
                 .AddScoped<GenerateToken>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(defaultConnection));
@@ -61,12 +62,44 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
         ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-        RoleClaimType = ClaimTypes.Role
+        RoleClaimType = ClaimTypes.Role,
+        ClockSkew = TimeSpan.Zero
+    };
+    
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+            Console.WriteLine($"Exception details: {context.Exception}");
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Console.WriteLine("Token validated successfully");
+            var claims = context.Principal?.Claims?.Select(c => $"{c.Type}: {c.Value}");
+            Console.WriteLine($"Claims: {string.Join(", ", claims ?? new string[0])}");
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            Console.WriteLine($"Authorization challenge: {context.Error}, {context.ErrorDescription}");
+            return Task.CompletedTask;
+        },
+        OnForbidden = context =>
+        {
+            Console.WriteLine("Authorization forbidden - user doesn't have required role");
+            return Task.CompletedTask;
+        }
     };
 });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -75,7 +108,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseMiddleware<AuditMiddleware>();
 app.UseAuthorization();
+app.UseMiddleware<AuditMiddleware>();
 app.MapControllers();
 app.Run();

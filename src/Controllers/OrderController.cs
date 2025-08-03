@@ -6,6 +6,7 @@ using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.Order;
 using AdminDashboard.src.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminDashboard.src.Controllers
@@ -21,6 +22,7 @@ namespace AdminDashboard.src.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetAllOrders(){
             try{
                 var orders = await _orderService.GetAllOrdersAsync();
@@ -33,6 +35,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetOrderById(Guid id){
             try{
                 var order = await _orderService.GetOrderByIdAsync(id);
@@ -45,6 +48,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateOrder(OrderCreateDto order){
             try{
                 var newOrder = await _orderService.CreateOrderAsync(order);
@@ -57,6 +61,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpPut("{id}/status")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateOrderStatus(Guid id, OrderStatus status){
             try{
                 var updatedOrder = await _orderService.UpdateOrderStatusAsync(id, status);

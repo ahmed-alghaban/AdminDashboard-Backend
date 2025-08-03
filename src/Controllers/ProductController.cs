@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Dtos.Product;
 using AdminDashboard.src.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminDashboard.src.Controllers
@@ -21,6 +22,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetAllProducts()
         {
             try
@@ -36,6 +38,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             try
@@ -51,6 +54,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto product)
         {
             try
@@ -66,6 +70,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductUpdateDto product)
         {
             try
@@ -81,6 +86,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             try

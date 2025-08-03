@@ -30,7 +30,7 @@ namespace AdminDashboard.src.Utilities
             var role = _appDbContext.Roles.Find(user.RoleId) ?? throw new Exception("Role not found");
             var roleName = role.Name;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(jwtKey);
+            var key = Encoding.UTF8.GetBytes(jwtKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]

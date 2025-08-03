@@ -72,6 +72,8 @@ namespace AdminDashboard.src.Configs
             CreateMap<Setting, SettingDto>();
             CreateMap<SettingUpdateDto, Setting>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<AuditLog, AuditLogDto>();
         }
     }
 }

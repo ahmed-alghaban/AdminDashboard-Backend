@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Dtos.Inventory;
 using AdminDashboard.src.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminDashboard.src.Controllers
@@ -20,6 +21,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllInventories(){
             try{
                 var inventories = await _inventoryService.GetAllInventoriesAsync();
@@ -32,6 +34,7 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateQuantity(Guid id, int quantity){
             try{
                 var updatedInventory = await _inventoryService.UpdateQuantityAsync(id, quantity);

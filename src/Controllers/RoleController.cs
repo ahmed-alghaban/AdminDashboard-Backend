@@ -6,12 +6,14 @@ using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Dtos.Role;
 using AdminDashboard.src.Dtos.User;
 using AdminDashboard.src.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminDashboard.src.Controllers
 {
     [ApiController]
     [Route("api/v1/roles")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;

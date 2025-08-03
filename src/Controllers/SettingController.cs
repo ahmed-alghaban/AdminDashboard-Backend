@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Dtos.Setting;
 using AdminDashboard.src.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminDashboard.src.Controllers
 {
     [ApiController]
     [Route("api/v1/settings")]
+    [Authorize(Roles = "Admin")]
     public class SettingController : ControllerBase
     {
         private readonly ISettingService _settingService;
