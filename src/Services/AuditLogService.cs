@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.AuditLog;
+using AdminDashboard.src.Utilities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +21,11 @@ namespace AdminDashboard.src.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AuditLogDto>> GetAllAuditLogsAsync()
+        public async Task<PaginationResult<AuditLogDto>> GetAllAuditLogsAsync(int pageNumber = 1, int pageSize = 10)
         {
             var auditLogs = await _context.AuditLogs.ToListAsync();
-            return _mapper.Map<IEnumerable<AuditLogDto>>(auditLogs);
+            var mappedAuditLogs = _mapper.Map<List<AuditLogDto>>(auditLogs);
+            return await PaginationSearch.PaginationAsync(mappedAuditLogs, pageNumber, pageSize);
         }
     }
 }

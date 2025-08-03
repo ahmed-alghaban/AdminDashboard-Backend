@@ -23,12 +23,12 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
-                var result = new ApiResult<IEnumerable<UserDto>>(users, true, "Users fetched successfully");
+                var paginationResult = await _userService.GetAllUsersAsync(pageNumber, pageSize);
+                var result = new ApiResult<PaginationResult<UserDto>>(paginationResult, true, "Users fetched successfully");
                 return Ok(result);
             }
             catch (Exception ex)

@@ -14,7 +14,8 @@ namespace AdminDashboard.src.Utilities
             {
                 PageSize = pageSize,
                 PageNumber = pageNumber,
-                TotalItems = (int)Math.Ceiling(toUseList.Count() / (double)pageSize),
+                TotalItems = toUseList.Count,
+                TotalPages = (int)Math.Ceiling(toUseList.Count() / (double)pageSize),
                 Items = await Task.Run(() => toUseList.Skip(itemsToSkip).Take(pageSize).ToList())
             };
         }

@@ -22,11 +22,11 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAuditLogs()
+        public async Task<IActionResult> GetAllAuditLogs([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try{
-                var auditLogs = await _auditLogService.GetAllAuditLogsAsync();
-                var result = new ApiResult<IEnumerable<AuditLogDto>>(auditLogs, true, "Audit logs fetched successfully");
+                var paginationResult = await _auditLogService.GetAllAuditLogsAsync(pageNumber, pageSize);
+                var result = new ApiResult<PaginationResult<AuditLogDto>>(paginationResult, true, "Audit logs fetched successfully");
                 return Ok(result);
             }
             catch(Exception ex){

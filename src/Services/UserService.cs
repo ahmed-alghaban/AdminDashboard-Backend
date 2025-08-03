@@ -30,6 +30,13 @@ namespace AdminDashboard.src.Services
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
+        public async Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10)
+        {
+            var users = await _context.Users.ToListAsync();
+            var mappedUsers = _mapper.Map<List<UserDto>>(users);
+            return await PaginationSearch.PaginationAsync(mappedUsers, pageNumber, pageSize);
+        }
+
         public async Task<UserDto> GetUserByIdAsync(Guid id)
         {
             var user = await _context.Users.FindAsync(id) ?? throw new Exception("User not found");
