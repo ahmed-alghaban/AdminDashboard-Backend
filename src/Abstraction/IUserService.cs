@@ -9,7 +9,6 @@ namespace AdminDashboard.src.Abstraction
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserDto>> GetAllUsersAsync();
         Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10);
         Task<UserDto> GetUserByIdAsync(Guid id);
         Task<UserDto> CreateUserAsync(UserCreateDto user);

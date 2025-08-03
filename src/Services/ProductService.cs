@@ -6,6 +6,7 @@ using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.Product;
 using AdminDashboard.src.Entities;
+using AdminDashboard.src.Utilities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,11 +22,11 @@ namespace AdminDashboard.src.Services
             _context = context;
             _mapper = mapper;
         }
-
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+        public async Task<PaginationResult<ProductDto>> GetAllProductsAsync(int pageNumber = 1, int pageSize = 10)
         {
             var products = await _context.Products.ToListAsync();
-            return _mapper.Map<IEnumerable<ProductDto>>(products);
+            var mappedProducts = _mapper.Map<List<ProductDto>>(products);
+            return await PaginationSearch.PaginationAsync(mappedProducts, pageNumber, pageSize);
         }
 
         public async Task<ProductDto> GetProductByIdAsync(Guid id)

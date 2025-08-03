@@ -24,12 +24,6 @@ namespace AdminDashboard.src.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
-        {
-            var users = await _context.Users.ToListAsync();
-            return _mapper.Map<IEnumerable<UserDto>>(users);
-        }
-
         public async Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10)
         {
             var users = await _context.Users.ToListAsync();

@@ -23,10 +23,10 @@ namespace AdminDashboard.src.Controllers
         
         [HttpGet]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> GetAllOrders(){
+        public async Task<IActionResult> GetAllOrders([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10){
             try{
-                var orders = await _orderService.GetAllOrdersAsync();
-                var result = new ApiResult<IEnumerable<OrderDto>>(orders, true, "Orders fetched successfully");
+                var paginationResult = await _orderService.GetAllOrdersAsync(pageNumber, pageSize);
+                var result = new ApiResult<PaginationResult<OrderDto>>(paginationResult, true, "Orders fetched successfully");
                 return Ok(result);
             }
             catch(Exception ex){

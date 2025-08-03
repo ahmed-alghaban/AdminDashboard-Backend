@@ -6,6 +6,7 @@ using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.Order;
 using AdminDashboard.src.Entities;
+using AdminDashboard.src.Utilities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,17 @@ namespace AdminDashboard.src.Services
                 .ThenInclude(item => item.Product)
                 .ToListAsync();
             return _mapper.Map<IEnumerable<OrderDto>>(orders);
+        }
+
+        public async Task<PaginationResult<OrderDto>> GetAllOrdersAsync(int pageNumber = 1, int pageSize = 10)
+        {
+            var orders = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .ThenInclude(item => item.Product)
+                .ToListAsync();
+            var mappedOrders = _mapper.Map<List<OrderDto>>(orders);
+            return await PaginationSearch.PaginationAsync(mappedOrders, pageNumber, pageSize);
         }
 
         public async Task<OrderDto> GetOrderByIdAsync(Guid id)

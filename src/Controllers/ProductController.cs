@@ -23,12 +23,12 @@ namespace AdminDashboard.src.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var products = await _productService.GetAllProductsAsync();
-                var result = new ApiResult<IEnumerable<ProductDto>>(products, true, "Products fetched successfully");
+                var paginationResult = await _productService.GetAllProductsAsync(pageNumber, pageSize);
+                var result = new ApiResult<PaginationResult<ProductDto>>(paginationResult, true, "Products fetched successfully");
                 return Ok(result);
             }
             catch (Exception ex)
