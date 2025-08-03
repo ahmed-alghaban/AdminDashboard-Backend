@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AdminDashboard.src.Abstraction;
 using AdminDashboard.src.Configs;
 using AdminDashboard.src.Dtos.Inventory;
+using AdminDashboard.src.Utilities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +21,11 @@ namespace AdminDashboard.src.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<InventoryDto>> GetAllInventoriesAsync()
+        public async Task<PaginationResult<InventoryDto>> GetAllInventoriesAsync(int pageNumber = 1, int pageSize = 10)
         {
             var inventories = await _context.Inventories.ToListAsync();
-            return _mapper.Map<IEnumerable<InventoryDto>>(inventories);
+            var mappedInventories = _mapper.Map<List<InventoryDto>>(inventories);
+            return await PaginationSearch.PaginationAsync(mappedInventories, pageNumber, pageSize);
         }
 
         public async Task<InventoryDto> UpdateQuantityAsync(Guid id, int quantity)

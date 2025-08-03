@@ -24,10 +24,11 @@ namespace AdminDashboard.src.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync()
+        public async Task<PaginationResult<CategoryDto>> GetAllCategoriesAsync(int pageNumber = 1, int pageSize = 10)
         {
             var categories = await _context.Categories.ToListAsync();
-            return _mapper.Map<IEnumerable<CategoryDto>>(categories);
+            var mappedCategories = _mapper.Map<List<CategoryDto>>(categories);
+            return await PaginationSearch.PaginationAsync(mappedCategories, pageNumber, pageSize);
         }
 
         public async Task<CategoryDto> GetCategoryByIdAsync(Guid id)

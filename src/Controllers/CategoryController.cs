@@ -20,12 +20,12 @@ namespace AdminDashboard.src.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
+        public async Task<IActionResult> GetAllCategories([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var categories = await _categoryService.GetAllCategoriesAsync();
-                var result = new ApiResult<IEnumerable<CategoryDto>>(categories, true, "Categories fetched successfully");
+                var paginationResult = await _categoryService.GetAllCategoriesAsync(pageNumber, pageSize);
+                var result = new ApiResult<PaginationResult<CategoryDto>>(paginationResult, true, "Categories fetched successfully");
                 return Ok(result);
             }
             catch (Exception ex)

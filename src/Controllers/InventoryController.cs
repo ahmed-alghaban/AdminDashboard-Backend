@@ -22,10 +22,10 @@ namespace AdminDashboard.src.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllInventories(){
+        public async Task<IActionResult> GetAllInventories([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10){
             try{
-                var inventories = await _inventoryService.GetAllInventoriesAsync();
-                var result = new ApiResult<IEnumerable<InventoryDto>>(inventories, true, "Inventories fetched successfully");
+                var paginationResult = await _inventoryService.GetAllInventoriesAsync(pageNumber, pageSize);
+                var result = new ApiResult<PaginationResult<InventoryDto>>(paginationResult, true, "Inventories fetched successfully");
                 return Ok(result);
             }
             catch(Exception ex){

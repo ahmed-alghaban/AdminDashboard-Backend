@@ -21,17 +21,6 @@ namespace AdminDashboard.src.Services
             _context = context;
             _mapper = mapper;
         }
-
-        public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
-        {
-            var orders = await _context.Orders
-                .Include(o => o.User)
-                .Include(o => o.OrderItems)
-                .ThenInclude(item => item.Product)
-                .ToListAsync();
-            return _mapper.Map<IEnumerable<OrderDto>>(orders);
-        }
-
         public async Task<PaginationResult<OrderDto>> GetAllOrdersAsync(int pageNumber = 1, int pageSize = 10)
         {
             var orders = await _context.Orders
