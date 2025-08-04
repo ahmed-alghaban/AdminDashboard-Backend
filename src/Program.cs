@@ -36,6 +36,15 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddCors(options =>
+   {
+       options.AddPolicy("AllowAll", builder =>
+       {
+           builder.AllowAnyOrigin()      // Allow all origins
+                  .AllowAnyMethod()      // Allow all HTTP methods
+                  .AllowAnyHeader();     // Allow all headers
+       });
+   });
 
 builder.Services.AddScoped<IUserService, UserService>()
                 .AddScoped<ICategoryService, CategoryService>()
@@ -75,7 +84,7 @@ builder.Services.AddAuthentication(options =>
         NameClaimType = ClaimTypes.NameIdentifier,
         ClockSkew = TimeSpan.Zero
     };
-    
+
     options.Events = new JwtBearerEvents
     {
         OnAuthenticationFailed = context =>
@@ -122,6 +131,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<AuditMiddleware>();

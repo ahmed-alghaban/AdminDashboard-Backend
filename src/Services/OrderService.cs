@@ -27,6 +27,7 @@ namespace AdminDashboard.src.Services
                 .Include(o => o.User)
                 .Include(o => o.OrderItems)
                 .ThenInclude(item => item.Product)
+                .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
             var mappedOrders = _mapper.Map<List<OrderDto>>(orders);
             return await PaginationSearch.PaginationAsync(mappedOrders, pageNumber, pageSize);
@@ -38,7 +39,7 @@ namespace AdminDashboard.src.Services
                 .Include(o => o.User)
                 .Include(o => o.OrderItems)
                 .ThenInclude(item => item.Product)
-                .FirstOrDefaultAsync(o => o.OrderId == id) 
+                .FirstOrDefaultAsync(o => o.OrderId == id)
                 ?? throw new KeyNotFoundException("Order not found");
             return _mapper.Map<OrderDto>(order);
         }
@@ -46,23 +47,24 @@ namespace AdminDashboard.src.Services
         {
             var newOrder = _mapper.Map<Order>(order);
             decimal totalAmount = 0;
-            
+
             // Process each order item and set UnitPrice
             foreach (var orderItem in newOrder.OrderItems)
             {
                 var product = await _context.Products
                     .Include(p => p.Inventory)
-                    .FirstOrDefaultAsync(p => p.ProductId == orderItem.ProductId) 
+                    .FirstOrDefaultAsync(p => p.ProductId == orderItem.ProductId)
                     ?? throw new KeyNotFoundException("Product not found");
-                
-                if(product.QuantityInStock < orderItem.Quantity){
+
+                if (product.QuantityInStock < orderItem.Quantity)
+                {
                     throw new InvalidOperationException("Insufficient stock");
                 }
-                
+
                 // Set the UnitPrice on the entity
                 orderItem.UnitPrice = product.Price;
                 totalAmount += product.Price * orderItem.Quantity;
-                
+
                 // Update inventory
                 if (product.Inventory != null)
                 {
@@ -80,12 +82,13 @@ namespace AdminDashboard.src.Services
                 .Include(order => order.User)
                 .Include(order => order.OrderItems)
                 .ThenInclude(item => item.Product)
-                .FirstOrDefaultAsync(order => order.OrderId == newOrder.OrderId) 
+                .FirstOrDefaultAsync(order => order.OrderId == newOrder.OrderId)
                 ?? throw new KeyNotFoundException("Order not found");
             return _mapper.Map<OrderDto>(orderObject);
         }
 
-        public async Task<OrderDto> UpdateOrderStatusAsync(Guid id, OrderStatus status){
+        public async Task<OrderDto> UpdateOrderStatusAsync(Guid id, OrderStatus status)
+        {
             var order = await _context.Orders.FindAsync(id) ?? throw new KeyNotFoundException("Order not found");
             order.Status = status;
             await _context.SaveChangesAsync();

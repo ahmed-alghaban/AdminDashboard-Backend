@@ -110,6 +110,6 @@ namespace AdminDashboard.src.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        } 
+        }
     }
 }

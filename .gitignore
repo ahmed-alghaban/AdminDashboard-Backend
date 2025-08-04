@@ -1,3 +1,9 @@
 bin
 obj
 .env
+publish/*
+Migrations/*
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
