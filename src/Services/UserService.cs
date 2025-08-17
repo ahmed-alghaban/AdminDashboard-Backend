@@ -27,23 +27,23 @@ namespace AdminDashboard.src.Services
         public async Task<PaginationResult<UserDto>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
         {
             var query = _context.Users.AsQueryable();
-            
+
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 var searchTermLower = searchTerm.ToLower();
-                query = query.Where(u => u.FirstName.ToLower().Contains(searchTermLower) || 
+                query = query.Where(u => u.FirstName.ToLower().Contains(searchTermLower) ||
                                        u.LastName.ToLower().Contains(searchTermLower) ||
                                        (u.FirstName.ToLower() + " " + u.LastName.ToLower()).Contains(searchTermLower));
             }
-            
-            var users = await query.ToListAsync();
+
+            var users = await query.Include(u => u.Role).ToListAsync();
             var mappedUsers = _mapper.Map<List<UserDto>>(users);
             return await PaginationSearch.PaginationAsync(mappedUsers, pageNumber, pageSize);
         }
 
         public async Task<UserDto> GetUserByIdAsync(Guid id)
         {
-            var user = await _context.Users.FindAsync(id) ?? throw new Exception("User not found");
+            var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.UserId == id) ?? throw new Exception("User not found");
             return _mapper.Map<UserDto>(user);
         }
 
