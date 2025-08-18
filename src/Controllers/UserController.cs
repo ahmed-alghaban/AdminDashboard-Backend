@@ -78,7 +78,8 @@ namespace AdminDashboard.src.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var errorResult = new ApiResult<object>(null, false, ex.Message);
+                return BadRequest(errorResult);
             }
         }
 

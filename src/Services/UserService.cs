@@ -61,8 +61,45 @@ namespace AdminDashboard.src.Services
         public async Task<UserDto> UpdateUserAsync(Guid id, UserUpdateDto user)
         {
             var existingUser = await _context.Users.FindAsync(id) ?? throw new Exception("User not found");
-            existingUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash) ?? existingUser.PasswordHash;
-            _context.Update(_mapper.Map(user, existingUser));
+
+            // Check for duplicate email or phone number, excluding the current user
+            if (!string.IsNullOrWhiteSpace(user.Email) && user.Email != existingUser.Email)
+            {
+                var emailExists = await _context.Users.AnyAsync(u => u.Email == user.Email && u.UserId != id);
+                if (emailExists)
+                {
+                    throw new Exception("Email already exists");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && user.PhoneNumber != existingUser.PhoneNumber)
+            {
+                var phoneExists = await _context.Users.AnyAsync(u => u.PhoneNumber == user.PhoneNumber && u.UserId != id);
+                if (phoneExists)
+                {
+                    throw new Exception("Phone number already exists");
+                }
+            }
+
+            // Validate RoleId if provided
+            if (user.RoleId.HasValue)
+            {
+                var roleExists = await _context.Roles.AnyAsync(r => r.RoleId == user.RoleId.Value);
+                if (!roleExists)
+                {
+                    throw new Exception("Role not found");
+                }
+            }
+
+            // Only update password if a new one is provided
+            if (!string.IsNullOrWhiteSpace(user.PasswordHash))
+            {
+                existingUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+            }
+
+            // Update other properties using AutoMapper
+            _mapper.Map(user, existingUser);
+            _context.Update(existingUser);
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDto>(existingUser);
         }

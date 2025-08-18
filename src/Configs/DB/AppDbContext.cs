@@ -35,7 +35,7 @@ namespace AdminDashboard.src.Configs
                 entity.Property(user => user.Status).IsRequired();
                 entity.Property(user => user.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 entity.Property(user => user.LastLoginAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                entity.Property(user => user.ProfileImageUrl).IsRequired();
+                entity.Property(user => user.ProfileImageUrl).IsRequired(false);
 
                 entity.HasOne(user => user.Role)
                 .WithMany(role => role.Users)
