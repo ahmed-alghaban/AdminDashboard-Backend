@@ -22,12 +22,12 @@ namespace AdminDashboard.src.Configs
             CreateMap<User, UserDto>();
             CreateMap<UserCreateDto, User>();
             CreateMap<UserUpdateDto, User>()
-                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => !string.IsNullOrEmpty(srcMember.ToString())));
 
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryCreateDto, Category>();
             CreateMap<CategoryUpdateDto, Category>()
-                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => !string.IsNullOrEmpty(srcMember.ToString())));
 
             CreateMap<Role, RoleDto>();
             CreateMap<RoleCreateDto, Role>();
