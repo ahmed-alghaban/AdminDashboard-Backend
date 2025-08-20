@@ -25,23 +25,23 @@ namespace AdminDashboard.src.Services
         public async Task<PaginationResult<ProductDto>> GetAllProductsAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
         {
             var query = _context.Products.AsQueryable();
-            
+
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 var searchTermLower = searchTerm.ToLower();
-                query = query.Where(p => p.ProductName.ToLower().Contains(searchTermLower) || 
+                query = query.Where(p => p.ProductName.ToLower().Contains(searchTermLower) ||
                                        p.Description.ToLower().Contains(searchTermLower) ||
                                        p.SKU.ToLower().Contains(searchTermLower));
             }
-            
-            var products = await query.ToListAsync();
+
+            var products = await query.Include(p => p.Category).ToListAsync();
             var mappedProducts = _mapper.Map<List<ProductDto>>(products);
             return await PaginationSearch.PaginationAsync(mappedProducts, pageNumber, pageSize);
         }
 
         public async Task<ProductDto> GetProductByIdAsync(Guid id)
         {
-            var product = await _context.Products.FindAsync(id) ?? throw new KeyNotFoundException("Product not found");
+            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.ProductId == id) ?? throw new KeyNotFoundException("Product not found");
             return _mapper.Map<ProductDto>(product);
         }
 
