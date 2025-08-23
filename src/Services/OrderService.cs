@@ -8,6 +8,7 @@ using AdminDashboard.src.Dtos.Order;
 using AdminDashboard.src.Entities;
 using AdminDashboard.src.Utilities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.src.Services
@@ -16,10 +17,13 @@ namespace AdminDashboard.src.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-        public OrderService(AppDbContext context, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public OrderService(AppDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<PaginationResult<OrderDto>> GetAllOrdersAsync(int pageNumber = 1, int pageSize = 10)
         {
@@ -47,6 +51,7 @@ namespace AdminDashboard.src.Services
         {
             var newOrder = _mapper.Map<Order>(order);
             decimal totalAmount = 0;
+            newOrder.UserId = GetUserIDFromToken.GetCurrentUserId(_httpContextAccessor);
 
             // Process each order item and set UnitPrice
             foreach (var orderItem in newOrder.OrderItems)
