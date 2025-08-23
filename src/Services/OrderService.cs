@@ -94,9 +94,16 @@ namespace AdminDashboard.src.Services
 
         public async Task<OrderDto> UpdateOrderStatusAsync(Guid id, OrderStatus status)
         {
-            var order = await _context.Orders.FindAsync(id) ?? throw new KeyNotFoundException("Order not found");
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .ThenInclude(item => item.Product)
+                .FirstOrDefaultAsync(o => o.OrderId == id)
+                ?? throw new KeyNotFoundException("Order not found");
+
             order.Status = status;
             await _context.SaveChangesAsync();
+
             return _mapper.Map<OrderDto>(order);
         }
     }

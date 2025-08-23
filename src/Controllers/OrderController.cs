@@ -20,55 +20,67 @@ namespace AdminDashboard.src.Controllers
         {
             _orderService = orderService;
         }
-        
+
         [HttpGet]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> GetAllOrders([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10){
-            try{
+        public async Task<IActionResult> GetAllOrders([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
                 var paginationResult = await _orderService.GetAllOrdersAsync(pageNumber, pageSize);
                 var result = new ApiResult<PaginationResult<OrderDto>>(paginationResult, true, "Orders fetched successfully");
                 return Ok(result);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> GetOrderById(Guid id){
-            try{
+        public async Task<IActionResult> GetOrderById(Guid id)
+        {
+            try
+            {
                 var order = await _orderService.GetOrderByIdAsync(id);
                 var result = new ApiResult<OrderDto>(order, true, "Order fetched successfully");
                 return Ok(result);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> CreateOrder(OrderCreateDto order){
-            try{
+        public async Task<IActionResult> CreateOrder(OrderCreateDto order)
+        {
+            try
+            {
                 var newOrder = await _orderService.CreateOrderAsync(order);
                 var result = new ApiResult<OrderDto>(newOrder, true, "Order created successfully");
                 return CreatedAtAction(nameof(GetOrderById), new { id = newOrder.OrderId }, result);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("{id}/status")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateOrderStatus(Guid id, OrderStatus status){
-            try{
-                var updatedOrder = await _orderService.UpdateOrderStatusAsync(id, status);
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] OrderStatusUpdateDto statusUpdate)
+        {
+            try
+            {
+                var updatedOrder = await _orderService.UpdateOrderStatusAsync(id, statusUpdate.Status);
                 var result = new ApiResult<OrderDto>(updatedOrder, true, "Order status updated successfully");
                 return Ok(result);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
